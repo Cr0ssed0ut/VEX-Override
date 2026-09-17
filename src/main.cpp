@@ -1,5 +1,5 @@
 #include "main.h"
-#include "configs.h"
+#include "lemlib/configs.h"
 #include "pros/adi.hpp"
 #include "api.h"
 

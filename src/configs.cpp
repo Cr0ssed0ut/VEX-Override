@@ -11,6 +11,8 @@ pros::Motor toggle_motor(7, pros::MotorGears::green);
 pros::Motor intake_motor(8, pros::MotorGears::green);
 pros::Motor flipper_motor(9, pros::MotorGears::green);
 
+pros::adi::Pneumatics piston('a', false, true);
+
 // drivetrain settings
 lemlib::Drivetrain drivetrain(&left_motor_group, // left motor group
                               &right_motor_group, // right motor group
