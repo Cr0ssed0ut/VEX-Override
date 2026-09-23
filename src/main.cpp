@@ -99,5 +99,8 @@ void opcontrol() {
 
         // delay to save resources
         pros::delay(25);
+
+        pros::MotorGroup lift_motors({5,6});
+        lift_motors.move(controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y));
     }
 }
