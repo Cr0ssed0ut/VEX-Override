@@ -1,7 +1,11 @@
 #include "main.h"
 #include "lemlib/configs.h"
-#include "pros/adi.hpp"
-#include "api.h"
+#include "pros/motor_group.hpp"
+
+pros::MotorGroup lift_motors({5,6});
+pros::Motor toggle_motor(7);
+pros::Motor intake_motor(8);
+pros::Motor flipper_motor(9);
 
 /**
  * A callback function for LLEMU's center button.
@@ -35,6 +39,7 @@ void initialize() {
             pros::lcd::print(0, "X: %f", chassis.getPose().x); // x
             pros::lcd::print(1, "Y: %f", chassis.getPose().y); // y
             pros::lcd::print(2, "Theta: %f", chassis.getPose().theta); // heading
+            pros::lcd::print(3, "Lift: %d", lift_motors.get_position()); // lift position
             // delay to save resources
             pros::delay(20);
         }
@@ -100,7 +105,33 @@ void opcontrol() {
         // delay to save resources
         pros::delay(25);
 
-        pros::MotorGroup lift_motors({5,6});
-        lift_motors.move(controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y));
+        
+
+        // control the lift motors with buttons L1 and L2
+        if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
+            lift_motors.move_velocity(127);
+        } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
+            lift_motors.move_velocity(-127);
+        } else {
+            lift_motors.move_velocity(0);
+        }
+
+        // control the intake motor with buttons R1 and R2
+        if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+            intake_motor.move_velocity(127);
+        } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+            intake_motor.move_velocity(-127);
+        } else {
+            intake_motor.move_velocity(0);
+        }
+
+        // control the toggle motor with button A and B
+        if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_A)) {
+            toggle_motor.move_velocity(127);
+        } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_B)) {
+            toggle_motor.move_velocity(-127);
+        } else {
+            toggle_motor.move_velocity(0);
+        }
     }
 }
