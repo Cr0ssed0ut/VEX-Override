@@ -35,7 +35,7 @@ void initialize() {
             pros::lcd::print(0, "X: %f", chassis.getPose().x); // x
             pros::lcd::print(1, "Y: %f", chassis.getPose().y); // y
             pros::lcd::print(2, "Theta: %f", chassis.getPose().theta); // heading
-            pros::lcd::print(3, "Lift: %d", lift_motor_group.get_position()); // lift position
+            pros::lcd::print(3, "Lift: %d", lift_encoder.get_angle()); // lift position
             // delay to save resources
             pros::delay(20);
         }
@@ -105,9 +105,9 @@ void opcontrol() {
 
         // control the lift motors with buttons R1 and R2
         if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
-            lift_motor_group.move_velocity(67);
+            lift_motor_group.move_velocity(127);
         } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
-            lift_motor_group.move_velocity(-67);
+            lift_motor_group.move_velocity(-127);
         } else {
             lift_motor_group.move_velocity(0);
         }

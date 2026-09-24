@@ -1,4 +1,5 @@
 #include "main.h"
+#include "pros/rotation.hpp"
 
 // left motor group
 pros::MotorGroup left_motor_group({-1,2}, pros::MotorGears::blue);
@@ -12,6 +13,7 @@ pros::Motor intake_motor(8, pros::MotorGears::green);
 pros::Motor flipper_motor(9, pros::MotorGears::green);
 
 pros::adi::Pneumatics piston('a', false, true);
+pros::Rotation lift_encoder(10);
 
 // drivetrain settings
 lemlib::ExpoDriveCurve throttle_curve(3,10,1.019);
