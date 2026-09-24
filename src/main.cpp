@@ -107,19 +107,19 @@ void opcontrol() {
 
         
 
-        // control the lift motors with buttons L1 and L2
-        if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
+        // control the lift motors with buttons R1 and R2
+        if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
             lift_motors.move_velocity(127);
-        } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
+        } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
             lift_motors.move_velocity(-127);
         } else {
             lift_motors.move_velocity(0);
         }
 
-        // control the intake motor with buttons R1 and R2
-        if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+        // control the intake motor with buttons L1 and L2
+        if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
             intake_motor.move_velocity(127);
-        } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+        } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
             intake_motor.move_velocity(-127);
         } else {
             intake_motor.move_velocity(0);

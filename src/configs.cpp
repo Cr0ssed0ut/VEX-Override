@@ -14,6 +14,9 @@ pros::Motor flipper_motor(9, pros::MotorGears::green);
 pros::adi::Pneumatics piston('a', false, true);
 
 // drivetrain settings
+lemlib::ExpoDriveCurve throttle_curve(3,10,1.019);
+lemlib::ExpoDriveCurve steer_curve(3,10,1.019);
+
 lemlib::Drivetrain drivetrain(&left_motor_group, // left motor group
                               &right_motor_group, // right motor group
                               10.5, // 10.5 inch track width
@@ -69,7 +72,9 @@ lemlib::ControllerSettings angular_controller(2, // proportional gain (kP)
 lemlib::Chassis chassis(drivetrain, // drivetrain settings
                         lateral_controller, // lateral PID settings
                         angular_controller, // angular PID settings
-                        sensors // odometry sensors
+                        sensors, // odometry sensors
+                        &throttle_curve, // throttle curve
+                        &steer_curve // steer curve
 );
 
 // initialize function. Runs on program startup
