@@ -4,13 +4,17 @@
 #include "api.h"
 #include "lemlib/api.hpp"
 #include "main.h"
+#include "pros/motors.hpp"
 
 extern pros::MotorGroup left_motor_group;
 extern pros::MotorGroup right_motor_group;
+extern pros::MotorGroup lift_motor_group;
 extern lemlib::Chassis chassis;
 
-extern pros::Motor intake;
-extern pros::Motor lift;
+extern pros::Motor intake_motor;
+extern pros::Motor toggle_motor;
+extern pros::Motor flipper_motor;
+extern pros::adi::Pneumatics piston;
 
 
 #endif 

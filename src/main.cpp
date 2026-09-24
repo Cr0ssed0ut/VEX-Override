@@ -2,11 +2,6 @@
 #include "lemlib/configs.h"
 #include "pros/motor_group.hpp"
 
-pros::MotorGroup lift_motors({5,6});
-pros::Motor toggle_motor(7);
-pros::Motor intake_motor(8);
-pros::Motor flipper_motor(9);
-
 /**
  * A callback function for LLEMU's center button.
  *
@@ -32,6 +27,7 @@ void on_center_button() {
 void initialize() {
     pros::lcd::initialize(); // initialize brain screen
     chassis.calibrate(); // calibrate sensors
+    lift_motor_group.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD); // set lift motors to hold position when not moving
     // print position to brain screen
     pros::Task screen_task([&]() {
         while (true) {
@@ -39,7 +35,7 @@ void initialize() {
             pros::lcd::print(0, "X: %f", chassis.getPose().x); // x
             pros::lcd::print(1, "Y: %f", chassis.getPose().y); // y
             pros::lcd::print(2, "Theta: %f", chassis.getPose().theta); // heading
-            pros::lcd::print(3, "Lift: %d", lift_motors.get_position()); // lift position
+            pros::lcd::print(3, "Lift: %d", lift_motor_group.get_position()); // lift position
             // delay to save resources
             pros::delay(20);
         }
@@ -109,11 +105,11 @@ void opcontrol() {
 
         // control the lift motors with buttons R1 and R2
         if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
-            lift_motors.move_velocity(127);
+            lift_motor_group.move_velocity(67);
         } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
-            lift_motors.move_velocity(-127);
+            lift_motor_group.move_velocity(-67);
         } else {
-            lift_motors.move_velocity(0);
+            lift_motor_group.move_velocity(0);
         }
 
         // control the intake motor with buttons L1 and L2
