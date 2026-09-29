@@ -9,7 +9,7 @@ pros::MotorGroup right_motor_group({3,-4}, pros::MotorGears::blue);
 pros::MotorGroup lift_motor_group({5,-6}, pros::MotorGears::red);
 
 pros::Motor toggle_motor(7, pros::MotorGears::green);
-pros::Motor intake_motor(8, pros::MotorGears::green);
+pros::Motor claw_motor(8, pros::MotorGears::green);
 pros::Motor flipper_motor(9, pros::MotorGears::green);
 
 pros::adi::Pneumatics piston('a', false, true);
