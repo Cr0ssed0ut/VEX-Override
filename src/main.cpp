@@ -26,7 +26,11 @@ void on_center_button() {
  * to keep execution time for this mode under a few seconds.
  */
 
-void initialize_motors() {
+void initialize() {
+    pros::lcd::initialize(); // initialize brain screen
+    chassis.calibrate(); // calibrate sensors
+    lift_encoder.reset_position(); // reset lift encoder position to 0
+
     toggle_motor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD); // set toggle motor to hold position when not moving
     
     lift_motor_group.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD); // set lift motors to hold position when not moving
@@ -38,21 +42,15 @@ void initialize_motors() {
 
     flipper_motor.set_encoder_units(pros::E_MOTOR_ENCODER_DEGREES); // set flipper motor to use degrees for encoder units
     flipper_motor.tare_position(); // reset flipper motor position to 0
-}
-
-void initialize() {
-    pros::lcd::initialize(); // initialize brain screen
-    chassis.calibrate(); // calibrate sensors
-    lift_encoder.reset_position(); // reset lift encoder position to 0
-
-    initialize_motors(); // initialize motors
 
     // print position to brain screen
     pros::Task screen_task([&]() {
         while (true) {
             // print robot location to the brain screen
-            pros::lcd::print(0, "X: %f  Y: %f", chassis.getPose().x, chassis.getPose().y);
-            pros::lcd::print(1, "Theta: %f", chassis.getPose().theta); // heading
+            auto pose = chassis.getPose();
+
+            pros::lcd::print(0, "X: %f  Y: %f", pose.x, pose.y);
+            pros::lcd::print(1, "Theta: %f", pose.theta); // heading
             pros::lcd::print(2, "Lift Pose (cDeg): %d", lift_encoder.get_angle()); // lift position
             pros::lcd::print(3, "Lift Draw (mA): %d", lift_motor_group.get_current_draw()); // lift current draw
             pros::lcd::print(4, "Claw Pose (Deg): %d", claw_motor.get_position()); // claw position
@@ -122,9 +120,6 @@ void opcontrol() {
         // move the robot
         chassis.arcade(leftY, rightX);
 
-        // delay to save resources
-        pros::delay(25);
-
         // control the lift motors with buttons R1 and R2
         if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
             lift_motor_group.move_velocity(127);
@@ -137,27 +132,32 @@ void opcontrol() {
         /* SET MOTOR DIRECTIONS BELOW PROGRAMMERS */
 
         //spin claw inwards with L2
-        if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
-            claw_motor.move_velocity(127);
+        if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
+            claw_motor.move_velocity(400);
+        } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y)) {
+            // open claw
+            claw_motor.move_absolute(-80,100);
+            claw_motor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+            pros::delay(10);
         } else {
             claw_motor.move_velocity(0);
+            claw_motor.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
         }
 
         //flip flipper with Right, hold, else return to neutral
         if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
             // put flipper up
-            flipper_motor.move_absolute(225,127);
+            flipper_motor.move_absolute(225,75);
+            flipper_motor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+            pros::delay(20);    
         } else {
             // return flipper to neutral position
-            flipper_motor.move_absolute(0,127);
+            flipper_motor.move_absolute(0,75);
+            flipper_motor.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
         }
 
-        if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y)) {
-            // open claw
-            claw_motor.move_absolute(45,127);
-        } else {
-            // return claw to neutral position
-            claw_motor.move_absolute(0,-127);
-        }
+        // delay to save resources
+        pros::delay(25);
+
     }
 }

@@ -1,6 +1,7 @@
-config driver control   | x
-    Y to open claw -> set pros::wait() or set motor angle
-    Right to flip flipper -> while loop, return to neutral when released
-    L2 to spin claw motor inwards
+config driver control   | M
+    Y to open claw -> set pros::wait() or set motor angle       | v
+    Right to flip flipper -> return to neutral when released    | v
+    L2 to spin claw motor inwards                               | v
+    check motor directions                                      | x
 set up PID              | x
 get coordinates for auto| x
