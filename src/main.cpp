@@ -134,11 +134,12 @@ void opcontrol() {
         //spin claw inwards with L2
         if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
             claw_motor.move_velocity(400);
+            toggle_motor.move_velocity(400);
         } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y)) {
             // open claw
-            claw_motor.move_absolute(-80,100);
+            
+            claw_motor.move_velocity(-400);
             claw_motor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-            pros::delay(10);
         } else {
             claw_motor.move_velocity(0);
             claw_motor.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
@@ -152,7 +153,7 @@ void opcontrol() {
             pros::delay(20);    
         } else {
             // return flipper to neutral position
-            flipper_motor.move_absolute(0,75);
+            flipper_motor.move_absolute(0,55);
             flipper_motor.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
         }
 

@@ -2,22 +2,22 @@
 #include "pros/rotation.hpp"
 
 // left motor group
-pros::MotorGroup left_motor_group({-1,2}, pros::MotorGears::blue);
+pros::MotorGroup left_motor_group({-1,-2}, pros::MotorGears::blue);
 // right motor group
-pros::MotorGroup right_motor_group({3,-4}, pros::MotorGears::blue);
+pros::MotorGroup right_motor_group({3,4}, pros::MotorGears::blue);
 
-pros::MotorGroup lift_motor_group({5,-6}, pros::MotorGears::green);
+pros::MotorGroup lift_motor_group({12,-8}, pros::MotorGears::green);
 
-pros::Motor toggle_motor(7, pros::MotorGears::green);
-pros::Motor claw_motor(8, pros::MotorGears::green);
-pros::Motor flipper_motor(9, pros::MotorGears::green);
+pros::Motor toggle_motor(10, pros::MotorGears::green);
+pros::Motor claw_motor(7, pros::MotorGears::green);
+pros::Motor flipper_motor(11, pros::MotorGears::green);
 
 pros::adi::Pneumatics piston('a', false, true);
 pros::Rotation lift_encoder(10);
 
 // drivetrain settings
-lemlib::ExpoDriveCurve throttle_curve(3,10,1.019);
-lemlib::ExpoDriveCurve steer_curve(3,10,1.019);
+lemlib::ExpoDriveCurve throttle_curve(3,10,1.05);
+lemlib::ExpoDriveCurve steer_curve(3,10,1.05);
 
 lemlib::Drivetrain drivetrain(&left_motor_group, // left motor group
                               &right_motor_group, // right motor group
